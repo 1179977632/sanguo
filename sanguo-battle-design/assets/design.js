@@ -133,20 +133,34 @@ function initBattleReplay() {
 }
 
 var battleEvents = [
-  { round: 1, text: '<strong>韩策</strong>发动「拒马阵」，对石魁造成 <span class="damage">82 兵力伤害</span>；石魁兵力 980 → 898，缴械判定未命中。' },
-  { round: 1, text: '<strong>石魁</strong>普通攻击韩策，「悍勇」提高普攻倍率，造成 <span class="damage">104 兵力伤害</span>；韩策兵力 1000 → 896。' },
-  { round: 1, text: '<strong>许翎</strong>发动「流火计」，随机选中石魁，造成 <span class="damage">146</span> 伤害，兵力 898 → 752；施加「易伤 10%」，持续至第 2 回合结束。' },
-  { round: 1, text: '<strong>陆骁</strong>成功准备「连弩齐射」，消耗本次行动且不普攻；等待下次可推进的行动机会结算。' },
-  { round: 1, text: '<strong>唐策</strong>普通攻击石魁，造成 <span class="damage">91</span>，兵力 752 → 661；追击战法「踏阵」追加 <span class="damage">53</span>，兵力 661 → 608。' },
-  { round: 1, text: '<strong>梅蘅</strong>普通攻击韩策，造成 <span class="damage">60</span>；韩策兵力 896 → 836。所有武将本回合行动完毕。' },
-  { round: 1, text: '<strong>梅蘅</strong>回合结束时触发「回春」，恢复石魁 <span class="control">98 兵力</span>；石魁兵力 608 → 706。' },
-  { round: 2, text: '<strong>韩策</strong>发动「拒马阵」，对石魁造成 <span class="damage">82</span>；石魁兵力 706 → 624，且命中缴械，持续至石魁本次行动结束。' },
-  { round: 2, text: '<strong>石魁</strong>受缴械影响，跳过普通攻击，本次行动没有造成伤害；行动结束后移除缴械。' },
-  { round: 2, text: '<strong>许翎</strong>发动「流火计」，随机选中石魁，造成 <span class="damage">146</span> 伤害，兵力 624 → 478；施加「易伤 10%」，持续至第 3 回合结束。' },
-  { round: 2, text: '<strong>陆骁</strong>优先结算已准备的「连弩齐射」，本次不检定发动率；随机选中韩策，造成 <span class="damage">236</span>，兵力 836 → 600，不再普攻。' },
-  { round: 2, text: '<strong>唐策</strong>普通攻击石魁，受易伤影响造成 <span class="damage">100</span>，兵力 478 → 378；「踏阵」追加伤害同受易伤影响，造成 <span class="damage">58</span>，兵力 378 → 320。' },
-  { round: 2, text: '<strong>梅蘅</strong>普通攻击韩策，造成 <span class="damage">60</span>；韩策兵力 600 → 540。所有武将本回合行动完毕。' },
-  { round: 2, text: '<strong>梅蘅</strong>回合结束时再次触发「回春」，恢复石魁 <span class="control">98 兵力</span>；石魁兵力 320 → 418。本次施加刷新易伤持续时间，状态保留至第 3 回合结束。双方主将均存活，样例在此截停。' }
+  { round: 1, text: '<strong>韩策 · 主动阶段</strong>发动「拒马阵」，对石魁造成 <span class="damage">120 兵力伤害</span>；石魁兵力 980 → 860，缴械判定被抵抗。主动成功后仍保留普攻。' },
+  { round: 1, text: '<strong>韩策 · 普攻阶段</strong>普通攻击敌方前锋石魁，造成 <span class="damage">100</span>；石魁兵力 860 → 760。' },
+  { round: 1, text: '<strong>石魁 · 主动阶段</strong>未配置主动战法，本阶段无发动检定；开场被动「悍勇」已使普攻倍率提升至 1.15，继续进入普攻阶段。' },
+  { round: 1, text: '<strong>石魁 · 普攻阶段</strong>「悍勇」强化后的普通攻击造成 <span class="damage">89</span>；韩策兵力 1000 → 911。' },
+  { round: 1, text: '<strong>许翎 · 主动阶段</strong>发动「流火计」，随机选中石魁，造成 <span class="damage">154</span>；石魁兵力 760 → 606，随后施加「易伤 10%」，持续至第 2 回合结束。' },
+  { round: 1, text: '<strong>许翎 · 普攻阶段</strong>普通攻击石魁，兵种优势和易伤共同作用，造成 <span class="damage">121</span>；石魁兵力 606 → 485。' },
+  { round: 1, text: '<strong>陆骁 · 主动阶段</strong>成功启动「连弩齐射」并开始准备，占用本轮主动阶段；下一次可用主动阶段优先释放，本轮仍可普攻。' },
+  { round: 1, text: '<strong>陆骁 · 普攻阶段</strong>准备期间普通攻击韩策，受兵种劣势修正造成 <span class="damage">90</span>；韩策兵力 911 → 821。' },
+  { round: 1, text: '<strong>唐策 · 主动阶段</strong>自带「踏阵」为追击战法，未配置主动战法，本阶段无发动检定，继续进入普攻阶段。' },
+  { round: 1, text: '<strong>唐策 · 普攻阶段</strong>普通攻击石魁，受兵种劣势修正和易伤影响造成 <span class="damage">99</span>；石魁兵力 485 → 386，命中后进入追击检定。' },
+  { round: 1, text: '<strong>唐策 · 追击事件</strong>「踏阵」发动成功，对同一目标追加 <span class="damage">59</span>；石魁兵力 386 → 327。追击不增加新的主动或普攻机会。' },
+  { round: 1, text: '<strong>梅蘅 · 主动阶段</strong>自带「回春」为回合末被动，未配置主动战法，本阶段无发动检定，继续进入普攻阶段。' },
+  { round: 1, text: '<strong>梅蘅 · 普攻阶段</strong>普通攻击韩策，造成 <span class="damage">100</span>；韩策兵力 821 → 721。六名武将本轮两个阶段均已处理。' },
+  { round: 1, text: '<strong>梅蘅 · 回合结束</strong>「回春」选择本方存活兵力比例最低的石魁，恢复 <span class="control">98</span>；石魁兵力 327 → 425。易伤在施加回合不减时，保留至第 2 回合结束。' },
+  { round: 2, text: '<strong>韩策 · 主动阶段</strong>以 0.721 的兵力系数发动「拒马阵」，受目标易伤加成造成 <span class="damage">95</span>；石魁兵力 425 → 330，<span class="control">缴械命中</span>，持续至石魁下一次行动结束。' },
+  { round: 2, text: '<strong>韩策 · 普攻阶段</strong>普通攻击石魁，受易伤影响造成 <span class="damage">79</span>；石魁兵力 330 → 251。主动施加控制仍不占用普攻。' },
+  { round: 2, text: '<strong>石魁 · 主动阶段</strong>缴械不阻止主动战法，本阶段仍有机会；本编队未配置主动战法，无发动检定。' },
+  { round: 2, text: '<strong>石魁 · 普攻阶段</strong>因缴械跳过普通攻击，本轮未造成伤害；行动结束后移除缴械。' },
+  { round: 2, text: '<strong>许翎 · 主动阶段</strong>发动「流火计」，本次随机选中梅蘅，受兵种劣势修正造成 <span class="damage">126</span>；梅蘅兵力 900 → 774，施加「易伤 10%」，持续至第 3 回合结束。' },
+  { round: 2, text: '<strong>许翎 · 普攻阶段</strong>普攻重新按前锋优先选中石魁，造成 <span class="damage">121</span>；石魁兵力 251 → 130。普攻目标不必与主动目标相同。' },
+  { round: 2, text: '<strong>陆骁 · 主动阶段</strong>优先释放已准备的「连弩齐射」，不重复检定发动率；随机选中韩策，造成 <span class="damage">198</span>；韩策兵力 721 → 523，随后仍可普攻。' },
+  { round: 2, text: '<strong>陆骁 · 普攻阶段</strong>释放准备战法后普通攻击韩策，造成 <span class="damage">90</span>；韩策兵力 523 → 433。' },
+  { round: 2, text: '<strong>唐策 · 主动阶段</strong>未配置主动战法，无发动检定，继续进入普攻阶段。' },
+  { round: 2, text: '<strong>唐策 · 普攻阶段</strong>普通攻击石魁，受兵种劣势修正造成 <span class="damage">99</span>；石魁兵力 130 → 31，随后检定追击。' },
+  { round: 2, text: '<strong>唐策 · 追击事件</strong>「踏阵」再次成功，理论伤害 59，实际扣除 <span class="damage">31</span>；石魁兵力 31 → 0，易伤随倒下移除。石魁并非主将，战斗继续。' },
+  { round: 2, text: '<strong>梅蘅 · 主动阶段</strong>未配置主动战法，无发动检定；身上的易伤只影响受到的伤害，不阻止行动。' },
+  { round: 2, text: '<strong>梅蘅 · 普攻阶段</strong>以 774 ÷ 900 的兵力系数普通攻击韩策，造成 <span class="damage">86</span>；韩策兵力 433 → 347。六名武将本轮两个阶段均已处理。' },
+  { round: 2, text: '<strong>梅蘅 · 回合结束</strong>石魁已倒下，不可治疗；「回春」为存活且兵力比例最低的梅蘅恢复 <span class="control">90</span>；梅蘅兵力 774 → 864，易伤持续至第 3 回合结束。双方主将韩策 347 / 1000、陆骁 1000 / 1000，均存活；样例在此截停，不判整场胜负。' }
 ];
 var battleIndex = 0;
 var battleTimer = null;
