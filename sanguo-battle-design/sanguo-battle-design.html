@@ -105,7 +105,7 @@
     O --> U{主将溃败?}
     U -- 是 --> P
     U -- 否 --> V{行动者倒下或受震慑?}
-    V -- 是 --> T[存活者的行动后持续效果逐个结算]
+    V -- 是 --> T[存活行动者的行动后持续效果逐个结算]
     V -- 否 --> W{受缴械?}
     W -- 是 --> S[跳过普攻机会]
     W -- 否 --> R[逐原子结算普攻、追击与单次被动响应]
@@ -181,7 +181,7 @@
             <tr><td>流火计</td><td>主动 · 50%</td><td>敌方随机单体，谋略伤害倍率 1.40；目标在合法敌军中等概率抽取。命中后施加易伤 10%，持续 1 个完整回合（施加回合不减时长）。</td></tr>
             <tr><td>连弩齐射</td><td>主动准备 · 35%</td><td>占用本轮主动阶段开始准备，在下一个未被震慑或封印的主动阶段优先释放，攻击敌方随机单体，兵刃伤害倍率 2.20；开始准备和释放均不替代该轮普攻。</td></tr>
             <tr><td>踏阵</td><td>追击 · 35%</td><td>普通攻击命中后，对同一合法目标追加兵刃伤害，倍率 0.60；每次普攻至多触发一次。</td></tr>
-            <tr><td>回春</td><td>被动 · 必定触发</td><td>每回合结束时，从本方三名武将中治疗当前兵力比例最低的存活武将（可含主将），恢复其兵力上限的 10%；同值时按前锋、中军、后军选择。</td></tr>
+            <tr><td>回春</td><td>被动 · 必定触发</td><td>每回合结束时，从本方三名武将中治疗当前兵力比例最低的存活武将（可含主将），恢复其兵力上限的 10%；同值时按前锋、中军、后军选择。这是回合末即时治疗，不是持续治疗状态。</td></tr>
           </tbody></table></div>
           <h3>准备、打断与槽位优先级</h3><ul class="checklist">
             <li>准备型战法开始准备时结束本轮主动阶段，但不占用本轮普攻机会；「准备 1 次行动」表示下一个未被震慑或封印的主动阶段即可结算，不再多等一回合，也不重复检定发动率。更长准备每经过一个未被震慑或封印的主动阶段推进 1 次；准备期间不检定其他主动战法，但每轮仍保有普攻机会。目标在释放时才按技能规则选取。</li>
@@ -237,12 +237,12 @@
 
         <section id="demo">
           <div class="kicker">10 / 可交互样例</div><h2>用一场虚构交锋检查流程是否顺手</h2>
-          <p class="muted">这是用于讨论规则的静态样例，不是平衡结论。通过下方控制检查编队、行动顺序和因果战报的阅读体验。</p>
+          <p class="muted">这是用于讨论规则的静态样例，不是平衡结论。通过下方控制检查编队、实时速度排序和因果战报的阅读体验。</p>
           <div class="tabs" role="tablist" aria-label="设计样例"><button class="tab" role="tab" id="tab-formation" aria-controls="panel-formation" aria-selected="true">编队快照</button><button class="tab" role="tab" id="tab-replay" aria-controls="panel-replay" aria-selected="false">战报演示</button><button class="tab" role="tab" id="tab-balance" aria-controls="panel-balance" aria-selected="false">数值曲线</button></div>
           <div id="panel-formation" class="tab-panel" role="tabpanel" aria-labelledby="tab-formation"><div class="formation">
             <div class="team"><div class="team-title">青州军 <small>进攻方 · 主将：韩策</small></div><div class="unit"><span class="pos">前</span><div><b>韩策 <span class="pill">主将</span></b><small>盾兵 · 控制 / 承伤 · 速度 120</small></div><span class="hp">1000</span></div><div class="unit"><span class="pos">中</span><div><b>许翎</b><small>弓兵 · 主动谋略输出 · 速度 100</small></div><span class="hp">920</span></div><div class="unit"><span class="pos">后</span><div><b>唐策</b><small>骑兵 · 追击 / 收割 · 速度 80</small></div><span class="hp">880</span></div></div>
             <div class="team"><div class="team-title">山越军 <small>防守方 · 主将：陆骁</small></div><div class="unit"><span class="pos">前</span><div><b>石魁</b><small>枪兵 · 普攻压制 · 速度 110</small></div><span class="hp">980</span></div><div class="unit"><span class="pos">中</span><div><b>陆骁 <span class="pill">主将</span></b><small>弓兵 · 爆发输出 · 速度 90</small></div><span class="hp">1000</span></div><div class="unit"><span class="pos">后</span><div><b>梅蘅</b><small>盾兵 · 谋士 / 治疗 · 速度 70</small></div><span class="hp">900</span></div></div>
-          </div><div class="callout"><strong>阵容意图：</strong>青州军以控制配合追击击穿前锋，由前锋韩策担任主将；山越军由中军陆骁担任主将，以准备战法削弱对手，梅蘅负责治疗存活队友。两队均由三名武将组成；样例角色分工用于验证配队阅读，不表示固定强弱。</div><p class="small muted">样例计算快照：六名武将的武力、智力、统率均设为 150，因此属性系数为 1.00；未配置额外战法、命中、闪避或暴击效果。各次伤害浮动预置为 1.00，兵种克制、实时兵力系数与易伤按正文公式计算；发动、控制和随机目标按战报预置结果展示。本样例没有速度变化，每次按实时速度选择，两个回合均形成韩策 → 石魁 → 许翎 → 陆骁 → 唐策 → 梅蘅的顺序；一般战斗中速度变化会影响后续选择，主将身份不改变排序。</p></div>
+          </div><div class="callout"><strong>阵容意图：</strong>青州军以控制配合追击击穿前锋，由前锋韩策担任主将；山越军由中军陆骁担任主将，以准备战法削弱对手，梅蘅负责治疗存活队友。两队均由三名武将组成；样例角色分工用于验证配队阅读，不表示固定强弱。</div><p class="small muted">样例计算快照：六名武将的武力、智力、统率均设为 150，因此属性系数为 1.00；未配置额外战法、命中、闪避或暴击效果。各次伤害浮动预置为 1.00，兵种克制、实时兵力系数与易伤按正文公式计算；发动、控制和随机目标按战报预置结果展示。本样例没有速度变化，每次按实时速度选择，两个回合均形成韩策 → 石魁 → 许翎 → 陆骁 → 唐策 → 梅蘅的样例顺序；一般战斗中速度变化会影响后续选择，主将身份不改变排序。</p></div>
           <div id="panel-replay" class="tab-panel hidden" role="tabpanel" aria-labelledby="tab-replay"><div class="battle-controls"><button class="control-btn" id="play">播放</button><button class="control-btn" id="pause">暂停</button><button class="control-btn" id="step">下一事件</button><button class="control-btn" id="reset">重置</button><span class="round-indicator" id="round-indicator">回合 1 / 2 · 0 / 28 事件</span></div><div class="log" id="battle-log" aria-live="polite"><div class="muted small">选择“播放”或“下一事件”查看演示战报。</div></div><p class="small muted">这是按固定快照编排的两回合、28 条事件：双方六名武将（每队三名，其中一名为主将）逐轮展示主动与普攻阶段，另列每回合追击与回合末治疗。第 2 回合展示缴械只阻断普攻、准备战法释放后仍可普攻，以及非主将倒下后战斗继续；兵力读数按正文公式逐次结算，仍为预置战报，不代表完整八回合模拟或平衡结论。</p></div>
           <div id="panel-balance" class="tab-panel hidden" role="tabpanel" aria-labelledby="tab-balance"><figure class="chart-figure"><figcaption><strong>兵力对伤害的影响：设计预期</strong></figcaption><div id="troop-chart" class="bar-chart" role="img" aria-label="兵力比例对伤害系数的建议曲线"></div></figure><p class="small muted">示意假设：兵力系数在满兵时为 1.00，兵力越低输出越低，30% 兵力后设置下限；曲线为待验证假设，不是线上数据。</p></div>
         </section>
@@ -251,7 +251,7 @@
           <div class="kicker">11 / 已确认决策</div><h2>20 项评审结论已纳入 0.3 基线</h2><p class="lead">以下记录对应本次逐项确认。规则方向按此统一；原型初始数值仍需平衡验证，尚未定值的经济参数另列于末尾。</p>
           <div class="decision"><div class="num">01</div><div><strong>已确认 · 全自动回合制</strong><p>战前配队和配置战法，战中由系统自动执行，不增加手动选目标或释放技能操作。</p></div></div>
           <div class="decision"><div class="num">02</div><div><strong>已确认 · 每队三名武将，其中一名为主将</strong><p>前锋、中军、后军各 1 名武将；从这三名武将中指定且仅指定 1 名为主将。主将身份附属于已上阵武将，沿用其位置、属性、兵种、战法和行动机会，每队总人数为 3 名。</p></div></div>
-          <div class="decision"><div class="num">03</div><div><strong>已确认 · 击败敌方主将立即获胜</strong><p>每个原子效果完成后检查主将兵力；主将倒下即停止后续效果。同一原子效果令双方主将同时倒下时判平局。</p></div></div>
+          <div class="decision"><div class="num">03</div><div><strong>已确认 · 击败敌方主将立即获胜</strong><p>攻击及其明确绑定的吸血、自损、反伤完成后检查主将兵力；主将倒下即取消该原子之后尚未开始的独立效果。同一原子完成时双方主将均倒下则判平局。</p></div></div>
           <div class="decision"><div class="num">04</div><div><strong>已确认 · 兵力同时代表生命和输出能力</strong><p>受伤减少兵力，当前兵力比例修正伤害；兵力为 0 即倒下。兵力系数下限 0.30 暂作原型初始值。</p></div></div>
           <div class="decision"><div class="num">05</div><div><strong>已确认 · 每名武将每回合有主动战法与普攻双机会</strong><p>每轮先处理主动阶段，再独立处理普攻阶段。主动战法成功、开始准备或准备完成都不替代普攻；发动仍受概率与合法目标约束，控制只阻断其对应阶段。</p></div></div>
           <div class="decision"><div class="num">06</div><div><strong>已确认 · 采用相同战损比例</strong><p>胜方、败方和平局双方采用同一战后伤兵恢复比例。具体百分比，以及异步 PVP 是否产生跨战斗伤兵尚未确定；这些参数不改变统一比例原则。</p></div></div>
