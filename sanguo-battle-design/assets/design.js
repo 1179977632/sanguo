@@ -157,7 +157,7 @@ var battleEvents = [
   { round: 2, text: '<strong>陆骁 · 普攻阶段</strong>释放准备战法后普通攻击韩策，造成 <span class="damage">90</span>；韩策兵力 523 → 433。' },
   { round: 2, text: '<strong>唐策 · 主动阶段</strong>未配置主动战法，无发动检定，继续进入普攻阶段。' },
   { round: 2, text: '<strong>唐策 · 普攻阶段</strong>普通攻击石魁，受兵种劣势修正与易伤影响理论伤害为 99，实际扣除 <span class="damage">99</span>；石魁兵力 130 → 31，随后检定追击。' },
-  { round: 2, text: '<strong>唐策 · 追击事件</strong>「踏阵」再次成功，理论伤害 59，实际扣除 <span class="damage">38</span>；石魁兵力 38 → 0，易伤随倒下移除。石魁并非主将，战斗继续。' },
+  { round: 2, text: '<strong>唐策 · 追击事件</strong>「踏阵」再次成功，理论伤害 59，实际扣除 <span class="damage">31</span>；石魁兵力 31 → 0，易伤随倒下移除。石魁并非主将，战斗继续。' },
   { round: 2, text: '<strong>梅蘅 · 主动阶段</strong>未配置主动战法，无发动检定；身上的易伤只影响受到的伤害，不阻止行动。' },
   { round: 2, text: '<strong>梅蘅 · 普攻阶段</strong>以 774 ÷ 900 的兵力系数普通攻击韩策，造成 <span class="damage">86</span>；韩策兵力 433 → 347。六名武将本轮两个阶段均已处理。' },
   { round: 2, text: '<strong>梅蘅 · 回合结束</strong>石魁已倒下，不可治疗；「回春」为存活且兵力比例最低的梅蘅恢复 <span class="control">90</span>；梅蘅兵力 774 → 864，易伤持续至第 3 回合结束。双方主将韩策 347 / 1000、陆骁 1000 / 1000，均存活；样例在此截停，不判整场胜负。' }
