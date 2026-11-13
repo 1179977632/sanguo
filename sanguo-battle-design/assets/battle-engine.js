@@ -95,8 +95,9 @@
       ? { outcome: 'draw', reason: '双方主将在同一结算原子内倒下' }
       : { outcome: fallen[0].side === 0 ? 'defeat' : 'victory', winnerSide: 1 - fallen[0].side, reason: fallen[0].name + '主将倒下' };
     state.phase = 'finished';
-    state.units.forEach(function cancelPendingPreparation(unit) {
+    state.units.forEach(function clearPendingEffects(unit) {
       cancelPreparation(state, unit, '因战斗结束取消尚未释放的准备战法。');
+      unit.statuses = [];
     });
     record(state, { kind: 'result', actorId: null, text: state.result.outcome === 'draw' ? '双方主将同一原子内倒下，战斗平局。' : state.units.filter(function survived(unit) { return unit.general && unit.troop > 0; })[0].name + '主将存活，战斗结束。' });
     return true;
@@ -377,7 +378,8 @@
           if (!state.result && actor.troop > 0) triggerPeriodic(state, actor, 'afterAction');
           if (actor.troop > 0) actor.actionCount += 1;
           actor.statuses.forEach(function tickActionStatus(status) {
-            if (status.durationType === 'actions' && status.firstActionRound <= state.round) status.remaining -= 1;
+            var periodic = status.damagePerTick !== undefined || status.healPerTick !== undefined;
+            if (!periodic && status.durationType === 'actions' && status.firstActionRound <= state.round) status.remaining -= 1;
           });
           actor.statuses = actor.statuses.filter(function keepStatus(status) { return status.remaining > 0 && (status.nextTick === undefined || status.nextTick < status.ticks); });
         }
@@ -390,14 +392,18 @@
       resolveRoundEnd(state);
       if (state.result) break;
       state.units.forEach(function tickRound(unit) {
-        unit.statuses.forEach(function tickStatus(status) { if (status.durationType === 'rounds' && round > status.appliedRound) status.remaining -= 1; });
+        unit.statuses.forEach(function tickStatus(status) {
+          var periodic = status.damagePerTick !== undefined || status.healPerTick !== undefined;
+          if (!periodic && status.durationType === 'rounds' && round > status.appliedRound) status.remaining -= 1;
+        });
         unit.statuses = unit.statuses.filter(function keepStatus(status) { return status.remaining > 0 && (status.nextTick === undefined || status.nextTick < status.ticks); });
       });
       if (round === state.parameters.maxRounds) {
         state.result = { outcome: 'draw', reason: state.parameters.maxRounds + '回合结束双方主将仍存活' };
         state.phase = 'finished';
-        state.units.forEach(function cancelPendingPreparation(unit) {
+        state.units.forEach(function clearPendingEffects(unit) {
           cancelPreparation(state, unit, '因战斗结束取消尚未释放的准备战法。');
+          unit.statuses = [];
         });
         record(state, { kind: 'result', actorId: null, text: state.result.reason + '，战斗平局。' });
       }
