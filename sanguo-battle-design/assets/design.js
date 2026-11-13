@@ -86,7 +86,7 @@ function updateBattleLog() {
   });
   log.scrollTop = log.scrollHeight;
   var current = battleEvents[Math.min(battleIndex - 1, battleEvents.length - 1)];
-  indicator.textContent = '回合 ' + current.round + ' / 2 · ' + battleIndex + ' / ' + battleEvents.length + ' 事件';
+  indicator.textContent = '回合 ' + current.round + ' / ' + battleEvents[battleEvents.length - 1].round + ' · ' + battleIndex + ' / ' + battleEvents.length + ' 事件';
 }
 
 // 将演示战报推进一个事件，播放结束时停止自动推进。
@@ -136,7 +136,7 @@ var battleEvents = [
   { round: 1, text: '<strong>韩策 · 主动阶段</strong>发动「拒马阵」，对石魁造成 <span class="damage">120 兵力伤害</span>；石魁兵力 980 → 860，缴械判定被抵抗。主动成功后仍保留普攻。' },
   { round: 1, text: '<strong>韩策 · 普攻阶段</strong>普通攻击敌方前锋石魁，造成 <span class="damage">100</span>；石魁兵力 860 → 760。' },
   { round: 1, text: '<strong>石魁 · 主动阶段</strong>未配置主动战法，本阶段无发动检定；开场被动「悍勇」已使普攻倍率提升至 1.15，继续进入普攻阶段。' },
-  { round: 1, text: '<strong>石魁 · 普攻阶段</strong>「悍勇」强化后的普通攻击造成 <span class="damage">115</span>；韩策兵力 1000 → 885。' },
+  { round: 1, text: '<strong>石魁 · 普攻阶段</strong>「悍勇」强化后的普通攻击造成 <span class="damage">115</span>；石魁当前兵力 980 / 980，韩策兵力 1000 → 885。' },
   { round: 1, text: '<strong>许翎 · 主动阶段</strong>发动「流火计」，随机选中石魁，造成 <span class="damage">154</span>；石魁兵力 760 → 606，随后施加「易伤 10%」，持续至第 2 回合结束。' },
   { round: 1, text: '<strong>许翎 · 普攻阶段</strong>普通攻击石魁，兵种优势和易伤共同作用，造成 <span class="damage">121</span>；石魁兵力 606 → 485。' },
   { round: 1, text: '<strong>陆骁 · 主动阶段</strong>成功启动「连弩齐射」并开始准备，占用本轮主动阶段；下一次可用主动阶段优先释放，本轮仍可普攻。' },
@@ -152,7 +152,7 @@ var battleEvents = [
   { round: 2, text: '<strong>石魁 · 主动阶段</strong>缴械不阻止主动战法，本阶段仍有机会；本编队未配置主动战法，无发动检定。' },
   { round: 2, text: '<strong>石魁 · 普攻阶段</strong>因缴械跳过普通攻击，本轮未造成伤害；行动结束后移除缴械。' },
   { round: 2, text: '<strong>许翎 · 主动阶段</strong>发动「流火计」，本次随机选中梅蘅，受兵种劣势修正造成 <span class="damage">126</span>；梅蘅兵力 900 → 774，施加「易伤 10%」，持续至第 3 回合结束。' },
-  { round: 2, text: '<strong>许翎 · 普攻阶段</strong>普攻重新按前锋优先选中石魁，造成 <span class="damage">121</span>；石魁兵力 258 → 137。普攻目标不必与主动目标相同。' },
+  { round: 2, text: '<strong>许翎 · 普攻阶段</strong>普攻按前锋优先选中石魁，造成 <span class="damage">121</span>；石魁兵力 258 → 137。普攻目标不必与主动目标相同。' },
   { round: 2, text: '<strong>陆骁 · 主动阶段</strong>优先释放已准备的「连弩齐射」，不重复检定发动率；随机选中韩策，造成 <span class="damage">198</span>；韩策兵力 695 → 497，随后仍可普攻。' },
   { round: 2, text: '<strong>陆骁 · 普攻阶段</strong>释放准备战法后普通攻击韩策，造成 <span class="damage">90</span>；韩策兵力 497 → 407。' },
   { round: 2, text: '<strong>唐策 · 主动阶段</strong>未配置主动战法，无发动检定，继续进入普攻阶段。' },
