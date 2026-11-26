@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>战斗系统设计稿｜三国策略战斗确认基线 0.5</title>
+  <title>战斗系统设计稿｜0.5 确认基线与 0.6 细化草案</title>
   <style>
     @font-face{font-family:Instrument;src:url('./_shared/fonts/InstrumentSans-Regular.ttf') format('truetype');font-weight:400}
     @font-face{font-family:Instrument;src:url('./_shared/fonts/InstrumentSans-Bold.ttf') format('truetype');font-weight:700}
@@ -16,20 +16,20 @@
   </style>
 </head>
 <body>
-  <div class="topbar"><div class="shell topbar-inner"><div class="brand"><span>◆</span>战斗系统确认基线 / 0.5</div><nav class="topnav"><a href="#loop">战斗闭环</a><a href="#rules">核心规则</a><a href="#demo">交互演示</a><a href="#decisions">评审结论</a></nav></div></div>
+  <div class="topbar"><div class="shell topbar-inner"><div class="brand">战斗系统 / 0.6 细化草案</div><nav class="topnav"><a href="#rules">核心规则</a><a href="#demo">交互演示</a><a href="#effect-contract">本轮细化</a><a href="#acceptance">验收与评审</a></nav></div></div>
   <div class="shell">
     <header class="hero">
-      <div><div class="eyebrow">GAME DESIGN / COMBAT SYSTEM</div><h1>三国策略战斗系统<br>详细设计稿</h1><p>一套以编队决策、战法联动与可复盘自动战斗为核心的回合制小队系统。本版已纳入 26 项评审结论，作为后续技能设计与原型验证的规则基线。</p></div>
-      <div class="hero-meta"><div class="status">已确认基线 · 版本 0.5</div><p><strong>设计范围</strong><br>战前编队、八回合全自动战斗、主动战法与普攻双机会、结果结算与战报复盘</p><p><strong>已确认结构</strong><br>每队共 3 名武将，其中指定 1 名为主将；每名武将轮到时先主动、后普攻；八回合上限。</p><p><strong>数值状态</strong><br>公式与初值采用当前方案，平衡性待原型验证；战损具体百分比待定。</p></div>
+      <div><div class="eyebrow">系统设计 / 自动战斗</div><h1>三国策略战斗系统<br>详细设计稿</h1><p>保留 0.5 版的 26 项已确认规则，本轮以 0.6 草案补齐战法效果声明、触发队列、状态生命周期及验收案例，让后续技能设计有统一依据。</p></div>
+      <div class="hero-meta"><div class="status">0.5 已确认 · 0.6 待评审</div><p><strong>已确认结构</strong><br>每队 3 名武将，其中 1 名为主将；每轮先主动、后普攻；最多八回合。</p><p><strong>本轮新增</strong><br>第 12–15 章：战法声明、结算队列、状态边界、四个扩展战法及规则验收。</p><p><strong>验证范围</strong><br>页面原型仍为 0.5 六战法样例；新草案尚未接入引擎，概率与倍率仍待平衡验证。</p></div>
     </header>
     <div class="layout">
-      <aside class="toc"><h2>目录</h2><a href="#summary">01 设计摘要</a><a href="#loop">02 战斗闭环</a><a href="#formation">03 编队与布阵</a><a href="#turns">04 回合流程</a><a href="#rules">05 结算规则</a><a href="#skills">06 战法系统</a><a href="#status">07 状态与控制</a><a href="#result">08 胜负与结果</a><a href="#report">09 战报复盘</a><a href="#demo">10 可交互样例</a><a href="#decisions">11 评审结论</a></aside>
+      <aside class="toc"><h2>目录</h2><a href="#summary">01 设计摘要</a><a href="#loop">02 战斗闭环</a><a href="#formation">03 编队与布阵</a><a href="#turns">04 回合流程</a><a href="#rules">05 结算规则</a><a href="#skills">06 战法系统</a><a href="#status">07 状态与控制</a><a href="#result">08 胜负与结果</a><a href="#report">09 战报复盘</a><a href="#demo">10 可交互样例</a><a href="#decisions">11 已确认结论</a><a href="#effect-contract">12 战法效果声明</a><a href="#effect-queue">13 触发与结算队列</a><a href="#status-lifecycle">14 状态与扩展战法</a><a href="#acceptance">15 验收与待评审</a></aside>
       <main>
         <section id="summary">
           <div class="kicker">01 / 设计摘要</div><h2>让“战前选对组合”成为主要操作</h2><p class="lead">玩家在战前决定阵容、站位和战法；战斗中系统自动执行，玩家通过清晰的行动顺序、因果战报和战后数据判断搭配是否奏效。</p>
           <div class="statline"><div class="stat"><b>3</b><span>每队武将（含 1 名主将）</span></div><div class="stat"><b>6</b><span>双方合计战斗单位</span></div><div class="stat"><b>8</b><span>已确认战斗回合上限</span></div><div class="stat"><b>3</b><span>每名武将战法槽位</span></div></div>
           <div class="grid2"><div class="panel"><h3>核心体验</h3><p>阵容角色分工明确；速度、目标、战法顺序可读；胜负主要由编队与战法联动决定，而不是战斗中高频点击。</p></div><div class="panel"><h3>设计边界</h3><p>数值是便于验证流程的原型初值。未讨论养成、抽取、赛季、地图行军、同盟或付费规则；这些不影响本稿的战斗结算定义。</p></div></div>
-          <div class="callout warm"><strong>基线说明：</strong>规则方向已确认；下文武将与战法为原创示例，概率与倍率按当前初值验证。对标产品只用于说明品类体验，不代表对其内部规则的复述。</div>
+          <div class="callout warm"><strong>版本说明：</strong>第 01–11 章沿用 0.5 已确认基线；第 12–15 章为本轮 0.6 细化草案，尚未形成新增确认结论。武将、战法为原创示例，概率与倍率用于原型验证；对标产品只说明品类体验。</div>
         </section>
 
         <section id="loop">
@@ -64,7 +64,7 @@
 
         <section id="formation">
           <div class="kicker">03 / 编队与布阵</div><h2>每队三名武将，其中一名为主将</h2>
-          <p>前锋、中军、后军各配置 1 名武将，每队共 3 名；从这三名武将中指定且仅指定 1 名为主将。本文“单位”与“武将”均指这三个出战角色。主将是身份标记，可位于任一位置，不额外占用出战名额。位置影响目标优先级和承伤机会，不直接提供隐性属性倍率；本方案不加入移动、射程与站位距离规则。每名武将（含主将）每回合分别获得一次主动战法机会和一次普通攻击机会；控制状态只阻止对应机会，成功发动主动战法或开始准备均不替代普通攻击。开战时初始兵力等于本场设定的兵力上限；样例编队行尾数字表示该武将的兵力上限。</p>
+          <p>前锋、中军、后军各配置 1 名武将，每队共 3 名；从这三名武将中指定且仅指定 1 名为主将。本文“单位”与“武将”均指这三个出战角色。主将是身份标记，可位于任一位置，不额外占用出战名额。位置影响目标优先级和承伤机会，不直接提供隐性属性倍率；本方案不加入移动、射程与站位距离规则。每名武将（含主将）每回合分别获得一次主动战法机会和一次普通攻击机会；控制状态只阻止对应机会，成功发动主动战法或开始准备均不替代普通攻击。标准对局开战时初始兵力等于本场设定的兵力上限；当前原型另用部分带伤单位检验治疗。样例编队行尾标明“初始兵力 / 上限”，这类测试输入不代表已经决定跨战斗兵力继承规则。</p>
           <div class="table-wrap"><table><thead><tr><th>配置项</th><th>已确认规则</th><th>校验与反馈</th></tr></thead><tbody>
             <tr><td>武将槽位与主将指定</td><td>前锋、中军、后军各 1 名武将，共 3 名；必须从已上阵的三名武将中指定且仅指定 1 名主将。</td><td>任一位置空缺、未指定主将、指定多名主将或主将不在上阵名单内，均不允许出战。</td></tr>
             <tr><td>重复角色</td><td>同一支队伍的三名武将不可重复；主将身份附属于其中一名武将。</td><td>选中重复项时阻止保存，并定位冲突槽位。</td></tr>
@@ -241,11 +241,11 @@
 
         <section id="demo">
           <div class="kicker">10 / 可交互样例</div><h2>用一场虚构交锋检查流程是否顺手</h2>
-          <p class="muted">运行自动战斗原型，按已确认的回合、战法与胜负规则结算；固定种子可复现相同战斗。</p>
+          <p class="muted">运行 0.5 六战法原型，验证基础回合、准备、控制和主将胜负；相同开战快照、规则版本、参数与种子可复现结果。第 12–15 章的扩展规则及战法尚未接入。</p>
           <div class="tabs" role="tablist" aria-label="设计样例"><button class="tab" role="tab" id="tab-formation" aria-controls="panel-formation" aria-selected="true">编队快照</button><button class="tab" role="tab" id="tab-replay" aria-controls="panel-replay" aria-selected="false">战报演示</button><button class="tab" role="tab" id="tab-balance" aria-controls="panel-balance" aria-selected="false">数值曲线</button></div>
           <div id="panel-formation" class="tab-panel" role="tabpanel" aria-labelledby="tab-formation"><div class="formation">
-            <div class="team"><div class="team-title">青州军 <small>进攻方 · 主将：韩策</small></div><div class="unit"><span class="pos">前</span><div><b>韩策 <span class="pill">主将</span></b><small>盾兵 · 控制 / 承伤 · 速度 120</small></div><span class="hp">1000</span></div><div class="unit"><span class="pos">中</span><div><b>许翎</b><small>弓兵 · 主动谋略输出 · 速度 100</small></div><span class="hp">920</span></div><div class="unit"><span class="pos">后</span><div><b>唐策</b><small>骑兵 · 追击 / 收割 · 速度 80</small></div><span class="hp">880</span></div></div>
-            <div class="team"><div class="team-title">山越军 <small>防守方 · 主将：陆骁</small></div><div class="unit"><span class="pos">前</span><div><b>石魁</b><small>枪兵 · 普攻压制 · 速度 110</small></div><span class="hp">980</span></div><div class="unit"><span class="pos">中</span><div><b>陆骁 <span class="pill">主将</span></b><small>弓兵 · 爆发输出 · 速度 90</small></div><span class="hp">1000</span></div><div class="unit"><span class="pos">后</span><div><b>梅蘅</b><small>盾兵 · 谋士 / 治疗 · 速度 70</small></div><span class="hp">900</span></div></div>
+            <div class="team"><div class="team-title">青州军 <small>进攻方 · 主将：韩策</small></div><div class="unit"><span class="pos">前</span><div><b>韩策 <span class="pill">主将</span></b><small>盾兵 · 控制 / 承伤 · 速度 120</small></div><span class="hp">1000 / 1000</span></div><div class="unit"><span class="pos">中</span><div><b>许翎</b><small>弓兵 · 主动谋略输出 · 速度 100</small></div><span class="hp">920 / 1000</span></div><div class="unit"><span class="pos">后</span><div><b>唐策</b><small>骑兵 · 追击 / 收割 · 速度 80</small></div><span class="hp">880</span></div></div>
+            <div class="team"><div class="team-title">山越军 <small>防守方 · 主将：陆骁</small></div><div class="unit"><span class="pos">前</span><div><b>石魁</b><small>枪兵 · 普攻压制 · 速度 110</small></div><span class="hp">980</span></div><div class="unit"><span class="pos">中</span><div><b>陆骁 <span class="pill">主将</span></b><small>弓兵 · 爆发输出 · 速度 90</small></div><span class="hp">1000 / 1000</span></div><div class="unit"><span class="pos">后</span><div><b>梅蘅</b><small>盾兵 · 谋士 / 治疗 · 速度 70</small></div><span class="hp">900</span></div></div>
           </div><div class="callout"><strong>阵容意图：</strong>青州军以控制配合追击，由前锋韩策担任主将；山越军由中军陆骁担任主将，梅蘅负责回合末治疗。阵容与战法仅作规则验证，不表示固定强弱。</div><p class="small muted">武将属性、战法倍率与概率为原型初值，结果用于检查规则与复盘，不代表平衡结论。战后恢复比例及跨战伤兵尚未定值，本原型不模拟战后恢复。</p></div>
           <div id="panel-replay" class="tab-panel hidden" role="tabpanel" aria-labelledby="tab-replay"><div class="battle-config"><label for="battle-seed">随机种子<input id="battle-seed" type="number" min="0" max="4294967295" step="1" value="20260212"></label><button class="control-btn active" id="run-battle">运行模拟</button><span class="small muted">相同种子与参数生成相同战斗记录。</span></div><div id="battle-result" class="battle-result muted" aria-live="polite">等待运行模拟</div><h3>当前战场</h3><div id="replay-roster" class="replay-roster" aria-live="polite"></div><div class="battle-controls"><button class="control-btn" id="play">播放</button><button class="control-btn" id="pause">暂停</button><button class="control-btn" id="step">下一事件</button><button class="control-btn" id="reset">重置到起点</button><span class="round-indicator" id="round-indicator">尚未运行</span></div><div class="log" id="battle-log" aria-live="polite"><div class="muted small">输入随机种子并运行模拟，生成本场战斗记录。</div></div><p class="small muted">模拟一次生成完整战果，回放只消费事件记录，不重新掷骰。重置回到当前模拟的开战快照；修改种子后点击“运行模拟”生成新战斗。</p></div>
           <div id="panel-balance" class="tab-panel hidden" role="tabpanel" aria-labelledby="tab-balance"><figure class="chart-figure"><figcaption><strong>兵力对伤害的原型参数</strong></figcaption><div id="troop-chart" class="bar-chart" role="img" aria-label="兵力比例对伤害系数的原型参数曲线"></div></figure><p class="small muted">曲线复用战斗引擎中的兵力系数下限；属于待验证原型参数，不是平衡结论。</p></div>
