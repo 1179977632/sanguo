@@ -131,7 +131,21 @@
     });
     if (duplicateIndex >= 0) target.statuses.splice(duplicateIndex, 1);
     target.statuses.push(status);
-    record(state, { kind: 'status', actorId: source.id, targetId: target.id, status: definition.name, snapshotDamage: status.damagePerTick, snapshotHealing: status.healPerTick, text: source.name + '对' + target.name + '施加' + definition.name + (status.damagePerTick !== undefined ? '，每跳固定伤害 ' + status.damagePerTick : '') + (status.healPerTick !== undefined ? '，每跳固定治疗 ' + status.healPerTick : '') + '。' });
+    record(state, {
+      kind: 'status',
+      actorId: source.id,
+      targetId: target.id,
+      status: definition.name,
+      duration: definition.duration,
+      durationType: definition.durationType,
+      control: Boolean(definition.control),
+      category: definition.category,
+      ticks: status.ticks,
+      sourceSkill: skill.id,
+      snapshotDamage: status.damagePerTick,
+      snapshotHealing: status.healPerTick,
+      text: source.name + '对' + target.name + '施加' + definition.name + (status.damagePerTick !== undefined ? '，每跳固定伤害 ' + status.damagePerTick : '') + (status.healPerTick !== undefined ? '，每跳固定治疗 ' + status.healPerTick : '') + '。'
+    });
     return true;
   }
 
@@ -149,7 +163,22 @@
     var dealt = immune ? 0 : Math.min(before, calculation.amount);
     target.troop -= dealt;
     if (target.troop <= 0) defeatUnit(state, target);
-    record(state, { kind: 'damage', actorId: source.id, targetId: target.id, skill: label, damage: dealt, theoreticalDamage: calculation.amount, before: before, after: target.troop, factors: calculation.factors, immune: immune, text: immune ? target.name + '免疫该类伤害。' : source.name + '发动「' + label + '」，对' + target.name + '造成' + dealt + '兵力伤害（' + before + ' → ' + target.troop + '）。' });
+    record(state, {
+      kind: 'damage',
+      actorId: source.id,
+      targetId: target.id,
+      skill: label,
+      damageType: skill.damageType,
+      multiplier: skill.multiplier,
+      baseDamage: state.parameters.baseDamage,
+      damage: dealt,
+      theoreticalDamage: calculation.amount,
+      before: before,
+      after: target.troop,
+      factors: calculation.factors,
+      immune: immune,
+      text: immune ? target.name + '免疫该类伤害。' : source.name + '发动「' + label + '」，对' + target.name + '造成' + dealt + '兵力伤害（' + before + ' → ' + target.troop + '）。'
+    });
     return { hit: true, ended: false, damage: dealt, before: before, after: target.troop };
   }
 
@@ -186,7 +215,19 @@
     var chance = Math.max(state.parameters.controlChanceMin, Math.min(state.parameters.controlChanceMax, skill.control.chance + (source.statusHit || 0) - (target.statusResistance || 0)));
     var roll = state.random();
     var hit = roll < chance;
-    record(state, { kind: 'controlCheck', actorId: source.id, targetId: target.id, chance: chance, roll: roll, hit: hit, text: skill.control.name + '命中率 ' + Math.round(chance * 100) + '%，' + (hit ? '施加成功。' : '被抵抗。') });
+    record(state, {
+      kind: 'controlCheck',
+      actorId: source.id,
+      targetId: target.id,
+      skill: skill.name,
+      status: skill.control.name,
+      duration: skill.control.duration,
+      durationType: skill.control.durationType,
+      chance: chance,
+      roll: roll,
+      hit: hit,
+      text: skill.control.name + '命中率 ' + Math.round(chance * 100) + '%，' + (hit ? '施加成功。' : '被抵抗。')
+    });
     if (hit) applyStatus(state, source, target, Object.assign({ control: true, category: 'control' }, skill.control), skill);
   }
 
@@ -268,13 +309,13 @@
       var damage = Math.min(beforeDamage, status.damagePerTick);
       target.troop -= damage;
       if (target.troop <= 0) defeatUnit(state, target);
-      record(state, { kind: 'periodicDamage', actorId: source.id, targetId: target.id, status: status.name, amount: damage, before: beforeDamage, after: target.troop, text: target.name + '受到「' + status.name + '」持续伤害 ' + damage + '（' + beforeDamage + ' → ' + target.troop + '）。' });
+      record(state, { kind: 'periodicDamage', actorId: source.id, targetId: target.id, status: status.name, amount: damage, perTick: status.damagePerTick, before: beforeDamage, after: target.troop, text: target.name + '受到「' + status.name + '」持续伤害 ' + damage + '（' + beforeDamage + ' → ' + target.troop + '）。' });
       if (checkResult(state)) return;
     } else if (status.healPerTick !== undefined && target.troop > 0) {
       var beforeHeal = target.troop;
       var healing = Math.min(target.maxTroop - target.troop, status.healPerTick);
       target.troop += healing;
-      record(state, { kind: 'periodicHeal', actorId: source.id, targetId: target.id, status: status.name, amount: healing, before: beforeHeal, after: target.troop, text: target.name + '受到「' + status.name + '」持续治疗 ' + healing + '（' + beforeHeal + ' → ' + target.troop + '）。' });
+      record(state, { kind: 'periodicHeal', actorId: source.id, targetId: target.id, status: status.name, amount: healing, perTick: status.healPerTick, before: beforeHeal, after: target.troop, text: target.name + '受到「' + status.name + '」持续治疗 ' + healing + '（' + beforeHeal + ' → ' + target.troop + '）。' });
     }
     status.nextTick += 1;
     status.remaining -= 1;
