@@ -19,17 +19,17 @@
   <div class="topbar"><div class="shell topbar-inner"><div class="brand">战斗系统 / 0.6 细化草案</div><nav class="topnav"><a href="#rules">核心规则</a><a href="#demo">交互演示</a><a href="#effect-contract">本轮细化</a><a href="#acceptance">验收与评审</a></nav></div></div>
   <div class="shell">
     <header class="hero">
-      <div><div class="eyebrow">系统设计 / 自动战斗</div><h1>三国策略战斗系统<br>详细设计稿</h1><p>保留 0.5 版的 26 项已确认规则，本轮以 0.6 草案补齐战法效果声明、触发队列、状态生命周期及验收案例，让后续技能设计有统一依据。</p></div>
-      <div class="hero-meta"><div class="status">0.5 已确认 · 0.6 待评审</div><p><strong>已确认结构</strong><br>每队 3 名武将，其中 1 名为主将；每轮先主动、后普攻；最多八回合。</p><p><strong>本轮新增</strong><br>第 12–15 章：战法声明、结算队列、状态边界、四个扩展战法及规则验收。</p><p><strong>验证范围</strong><br>页面原型仍为 0.5 六战法样例；新草案尚未接入引擎，概率与倍率仍待平衡验证。</p></div>
+      <div><div class="eyebrow">系统设计 / 自动战斗</div><h1>三国策略战斗系统<br>详细设计稿</h1><p>保留 0.5 版的 26 项已确认规则，本轮以 0.6 草案补齐战法效果声明、触发队列、状态生命周期、验收案例及数值基线，让后续技能设计有统一依据。</p></div>
+      <div class="hero-meta"><div class="status">0.5 已确认 · 0.6 待评审</div><p><strong>已确认结构</strong><br>每队 3 名武将，其中 1 名为主将；每轮先主动、后普攻；最多八回合。</p><p><strong>本轮新增</strong><br>第 12–16 章：战法声明、结算队列、状态边界、扩展战法、规则验收及数值基线。</p><p><strong>验证范围</strong><br>页面原型仍为 0.5 六战法样例；新草案尚未接入引擎，概率与倍率仍待平衡验证。</p></div>
     </header>
     <div class="layout">
-      <aside class="toc"><h2>目录</h2><a href="#summary">01 设计摘要</a><a href="#loop">02 战斗闭环</a><a href="#formation">03 编队与布阵</a><a href="#turns">04 回合流程</a><a href="#rules">05 结算规则</a><a href="#skills">06 战法系统</a><a href="#status">07 状态与控制</a><a href="#result">08 胜负与结果</a><a href="#report">09 战报复盘</a><a href="#demo">10 可交互样例</a><a href="#decisions">11 已确认结论</a><a href="#effect-contract">12 战法效果声明</a><a href="#effect-queue">13 触发与结算队列</a><a href="#status-lifecycle">14 状态与扩展战法</a><a href="#acceptance">15 验收与待评审</a></aside>
+      <aside class="toc"><h2>目录</h2><a href="#summary">01 设计摘要</a><a href="#loop">02 战斗闭环</a><a href="#formation">03 编队与布阵</a><a href="#turns">04 回合流程</a><a href="#rules">05 结算规则</a><a href="#skills">06 战法系统</a><a href="#status">07 状态与控制</a><a href="#result">08 胜负与结果</a><a href="#report">09 战报复盘</a><a href="#demo">10 可交互样例</a><a href="#decisions">11 已确认结论</a><a href="#effect-contract">12 战法效果声明</a><a href="#effect-queue">13 触发与结算队列</a><a href="#status-lifecycle">14 状态与扩展战法</a><a href="#acceptance">15 验收与待评审</a><a href="#balance-baseline">16 数值与平衡基线</a></aside>
       <main>
         <section id="summary">
           <div class="kicker">01 / 设计摘要</div><h2>让“战前选对组合”成为主要操作</h2><p class="lead">玩家在战前决定阵容、站位和战法；战斗中系统自动执行，玩家通过清晰的行动顺序、因果战报和战后数据判断搭配是否奏效。</p>
           <div class="statline"><div class="stat"><b>3</b><span>每队武将（含 1 名主将）</span></div><div class="stat"><b>6</b><span>双方合计战斗单位</span></div><div class="stat"><b>8</b><span>已确认战斗回合上限</span></div><div class="stat"><b>3</b><span>每名武将战法槽位</span></div></div>
           <div class="grid2"><div class="panel"><h3>核心体验</h3><p>阵容角色分工明确；速度、目标、战法顺序可读；胜负主要由编队与战法联动决定，而不是战斗中高频点击。</p></div><div class="panel"><h3>设计边界</h3><p>数值是便于验证流程的原型初值。未讨论养成、抽取、赛季、地图行军、同盟或付费规则；这些不影响本稿的战斗结算定义。</p></div></div>
-          <div class="callout warm"><strong>版本说明：</strong>第 01–11 章沿用 0.5 已确认基线；第 12–15 章为本轮 0.6 细化草案，尚未形成新增确认结论。武将、战法为原创示例，概率与倍率用于原型验证；对标产品只说明品类体验。</div>
+          <div class="callout warm"><strong>版本说明：</strong>第 01–11 章沿用 0.5 已确认基线；第 12–16 章为本轮 0.6 细化草案，尚未形成新增确认结论。武将、战法为原创示例，概率与倍率用于原型验证；对标产品只说明品类体验。</div>
         </section>
 
         <section id="loop">
@@ -241,7 +241,7 @@
 
         <section id="demo">
           <div class="kicker">10 / 可交互样例</div><h2>用一场虚构交锋检查流程是否顺手</h2>
-          <p class="muted">运行 0.5 六战法原型，验证基础回合、准备、控制和主将胜负；相同开战快照、规则版本、参数与种子可复现结果。第 12–15 章的扩展规则及战法尚未接入。</p>
+          <p class="muted">运行 0.5 六战法原型，验证基础回合、准备、控制和主将胜负；相同开战快照、规则版本、参数与种子可复现结果。第 12–16 章的扩展规则、战法及数值基线尚未接入。</p>
           <div class="tabs" role="tablist" aria-label="设计样例"><button class="tab" role="tab" id="tab-formation" aria-controls="panel-formation" aria-selected="true">编队快照</button><button class="tab" role="tab" id="tab-replay" aria-controls="panel-replay" aria-selected="false">战报演示</button><button class="tab" role="tab" id="tab-balance" aria-controls="panel-balance" aria-selected="false">数值曲线</button></div>
           <div id="panel-formation" class="tab-panel" role="tabpanel" aria-labelledby="tab-formation"><div class="formation">
             <div class="team"><div class="team-title">青州军 <small>进攻方 · 主将：韩策</small></div><div class="unit"><span class="pos">前</span><div><b>韩策 <span class="pill">主将</span></b><small>盾兵 · 控制 / 承伤 · 速度 120</small></div><span class="hp">1000 / 1000</span></div><div class="unit"><span class="pos">中</span><div><b>许翎</b><small>弓兵 · 主动谋略输出 · 速度 100</small></div><span class="hp">920 / 1000</span></div><div class="unit"><span class="pos">后</span><div><b>唐策</b><small>骑兵 · 追击 / 收割 · 速度 80</small></div><span class="hp">880 / 1000</span></div></div>
@@ -252,7 +252,7 @@
         </section>
 
         <section id="decisions">
-          <div class="kicker">11 / 已确认决策</div><h2>26 项评审结论已纳入 0.5 基线</h2><p class="lead">以下记录对应此前逐项确认的 0.5 基线。规则方向按此统一；第 12–15 章的 0.6 新取舍仍待评审，原型初始数值与尚未定值的经济参数另行验证。</p>
+          <div class="kicker">11 / 已确认决策</div><h2>26 项评审结论已纳入 0.5 基线</h2><p class="lead">以下记录对应此前逐项确认的 0.5 基线。规则方向按此统一；第 12–16 章的 0.6 新取舍仍待评审，原型初始数值与尚未定值的经济参数另行验证。</p>
           <div class="decision"><div class="num">01</div><div><strong>已确认 · 全自动回合制</strong><p>战前配队和配置战法，战中由系统自动执行，不增加手动选目标或释放技能操作。</p></div></div>
           <div class="decision"><div class="num">02</div><div><strong>已确认 · 每队三名武将，其中一名为主将</strong><p>前锋、中军、后军各 1 名武将；从这三名武将中指定且仅指定 1 名为主将。主将身份附属于已上阵武将，沿用其位置、属性、兵种、战法和行动机会，每队总人数为 3 名。</p></div></div>
           <div class="decision"><div class="num">03</div><div><strong>已确认 · 击败敌方主将立即获胜</strong><p>攻击及其明确绑定的吸血、自损、反伤完成后检查主将兵力；主将倒下即取消该原子之后尚未开始的独立效果。同一原子完成时双方主将均倒下则判平局。</p></div></div>
@@ -423,7 +423,70 @@
           </tbody></table></div>
           <p class="small muted">以上六项仍标记为待评审，未加入第 11 章的 26 项确认结论。后续原型扩展应按“队列与状态实例 → 四个战法 → 对应案例与战报统计”的顺序接入，并继续保留同种子可复现能力。</p>
         </section>
-        <footer><div class="footer-line">战斗系统设计稿 · 0.5 已确认基线 / 0.6 待评审草案。第 01–11 章保留 26 项确认结论，第 12–15 章为本轮细化；可运行原型仍为 0.5 六战法样例。示例倍率与概率待平衡，战后恢复百分比另定。本文为原创设计，不代表竞品内部机制。</div></footer>
+        <section id="balance-baseline">
+          <div class="kicker">16 / 数值与平衡基线 · 0.6 待评审</div><h2>先量节奏，再调倍率</h2>
+          <p class="lead">规则正确不等于对局可玩。以下用 0.5 引擎、固定种子 1–1000 实测，给出节奏、伤害、治疗与站位的基线；这些是 0.6 草案的调参依据，不是平衡结论。</p>
+          <div class="statline"><div class="stat"><b>2 : 98</b><span>当前样例胜率（青州 : 山越）</span></div><div class="stat"><b>5.10</b><span>当前样例平均回合</span></div><div class="stat"><b>77.7%</b><span>主将均在中军时的平局率</span></div><div class="stat"><b>24.4%</b><span>回春治疗占本队承伤</span></div></div>
+          <h3>测量口径</h3>
+          <div class="callout">版本 0.5 引擎、六个样例战法、当前样例编队与默认参数；种子 1–1000 各运行一次并取平均。伤害按实际扣兵统计，过量伤害、满兵治疗与免疫分别处理；只比较同版本、同参数的结果。换版本、换随机顺序或改配置后必须重跑。</div>
+          <h3>当前样例：2 : 98 来自站位，不是引擎偏向</h3>
+          <div class="table-wrap"><table><thead><tr><th>指标</th><th>实测</th><th>读法</th></tr></thead><tbody>
+            <tr><td>胜率</td><td>青州 2.0% / 山越 98.0% / 平局 0%</td><td>样例站位刻意不对称，不能当作系统平衡结论。</td></tr>
+            <tr><td>平均回合</td><td>5.10；94.8% 对局落在 4–6 回合</td><td>节奏本身符合 4–6 回合的目标。</td></tr>
+            <tr><td>双方总伤害</td><td>青州 1684 / 山越 1148</td><td>青州输出更高却输掉，说明胜负不在总输出。</td></tr>
+            <tr><td>主将承伤</td><td>韩策 998 / 陆骁 333</td><td>韩策承受了青州全部承伤的 87%，刚好等于其满兵力。</td></tr>
+            <tr><td>伤害构成</td><td>普攻 73.2% / 主动 24.3% / 追击 2.5%</td><td>普攻占比偏高，追击与战法存在感弱。</td></tr>
+            <tr><td>回春治疗</td><td>410 / 场，占山越承伤 24.4%</td><td>接近 25% 的建议上限，但不是失利的单独原因。</td></tr>
+            <tr><td>缴械</td><td>成功 1.03 次/场，抵抗 1.27 次，阻止约 1.02 次普攻</td><td>约占山越普攻机会的 6.7%，控制不是失利主因。</td></tr>
+          </tbody></table></div>
+          <p>青州把主将韩策放在前锋，山越把主将陆骁放在中军。普攻按前锋 → 中军 → 后军选第一个存活敌将，因此山越的每一次普攻都直接落在韩策身上；青州必须先击破石魁，才能碰到陆骁。两边的“有效击杀阈值”不同：暴露主将约 1000 兵力，受保护主将约 2000 兵力（未计治疗）。青州总输出更高，却被前排吸收；山越输出更低，却直接完成了对主将的击杀。</p>
+          <p class="small muted">站位是已确认规则，不是缺陷。它说明主将位置是高风险、高收益的战术选择；不能用同一套数值同时验证“主将前锋”和“主将中军”两种阵容。</p>
+          <h3>把主将保护起来，问题才暴露</h3>
+          <div class="table-wrap"><table><thead><tr><th>阵容假设</th><th>青州胜</th><th>山越胜</th><th>平局</th><th>平均回合</th></tr></thead><tbody>
+            <tr><td>当前样例（青州主将前锋）</td><td>2.0%</td><td>98.0%</td><td>0%</td><td>5.10</td></tr>
+            <tr><td>青州主将移至中军</td><td>6.9%</td><td>15.4%</td><td>77.7%</td><td>7.92</td></tr>
+            <tr><td>在此基础上双方满兵</td><td>15.2%</td><td>12.0%</td><td>72.8%</td><td>7.88</td></tr>
+            <tr><td>双方主将均置于前锋</td><td>61.2%</td><td>38.8%</td><td>0%</td><td>4.19</td></tr>
+          </tbody></table></div>
+          <p>双方主将都受保护后，平局率升到 72.8–77.7%。原因可以算出来：只算普攻，每方八回合共 24 个行动轮次、每次基准 100，上限约 2400；而击破“前锋 + 中军主将”约需 2000，再加回春约 410，阈值约 2410。仅普攻已经不够，必须靠战法补足；实测主动与追击合计只占伤害的 26.8%，不足以稳定补上缺口。再加上兵力系数随残兵下降、目标切换与过量伤害折损，多数对局就打不完了。</p>
+          <p>反过来，双方主将都放在前锋时，对局回到 4.19 回合，但青州胜率 61.2%，说明两套战法组合在同一站位下也不对等，青州更占优。站位与战法强度叠加，才形成了当前样例的极端结果。</p>
+          <h3>单个战法的期望值都在区间内</h3>
+          <div class="table-wrap"><table><thead><tr><th>战法</th><th>类型</th><th>期望倍率</th><th>建议区间</th></tr></thead><tbody>
+            <tr><td>拒马阵</td><td>即时主动</td><td>45% × 1.20 = 0.54</td><td>即时主动 0.45–0.70</td></tr>
+            <tr><td>流火计</td><td>即时主动</td><td>50% × 1.40 = 0.70</td><td>即时主动 0.45–0.70（上沿）</td></tr>
+            <tr><td>连弩齐射</td><td>准备主动</td><td>35% × 2.20 = 0.77</td><td>准备主动 0.65–0.85</td></tr>
+            <tr><td>踏阵</td><td>追击</td><td>35% × 0.60 = 0.21</td><td>追击 0.15–0.30</td></tr>
+            <tr><td>悍勇</td><td>被动</td><td>普攻倍率 +0.15</td><td>普攻强化 0.10–0.20</td></tr>
+            <tr><td>回春</td><td>被动治疗</td><td>每回合 0.10 最大兵力</td><td>治疗 ≤0.15 / 回合</td></tr>
+          </tbody></table></div>
+          <p>六个样例的期望倍率全部落在建议区间，但当前对局仍是 2 : 98。结论是：先不要调单个战法的倍率或概率，优先把比较条件做对称，再解决对称保护下的总输出不足。</p>
+          <h3>控制与治疗的预算</h3>
+          <p>缴械每场成功 1.03 次、被抵抗 1.27 次，实际阻止约 1.02 次普攻；按山越约 15 次普攻机会计算，覆盖率约 6.7%。控制能改变节奏，但不是这套样例胜负的主因。</p>
+          <p>回春每场治疗 410，占山越承伤 24.4%，接近建议上限。它把“击破前排 + 主将”的阈值从约 2000 抬到约 2410，是平局率升高的重要推手；如果要降低平局率，治疗与总输出必须一起调整，不能只削治疗。</p>
+          <p class="small muted">建议预算：单一控制对目标行动机会的覆盖率 10–25%；多种控制合计不超过 35%；治疗总量占本队承伤 10–25%；持续治疗与即时治疗合计不超过 35%。这些是原型目标，不是已确认数值。</p>
+          <h3>0.6 建议采用的平衡验收指标</h3>
+          <div class="table-wrap"><table><thead><tr><th>指标</th><th>当前实测</th><th>建议目标</th><th>说明</th></tr></thead><tbody>
+            <tr><td>同档阵容胜率</td><td>未测（样例不同档）</td><td>45–55%</td><td>镜像或同预算阵容；先固定站位与兵力，再比较。</td></tr>
+            <tr><td>平均回合</td><td>5.10</td><td>4–6</td><td>当前已达标，改动后不得显著拉长。</td></tr>
+            <tr><td>八回合平局率</td><td>0% / 72.8–77.7%</td><td>≤10%</td><td>前者是暴露主将，后者是对称保护；后者明显超标。</td></tr>
+            <tr><td>普攻伤害占比</td><td>73.2%</td><td>50–65%</td><td>高于目标说明战法存在感弱。</td></tr>
+            <tr><td>主动伤害占比</td><td>24.3%</td><td>25–40%</td><td>接近下沿，可随主动战法扩充提升。</td></tr>
+            <tr><td>追击伤害占比</td><td>2.5%</td><td>5–15%</td><td>明显偏低，优先检查追击机会与倍率。</td></tr>
+            <tr><td>治疗 / 本队承伤</td><td>24.4%</td><td>10–25%</td><td>贴近上限；与总输出一起调整。</td></tr>
+            <tr><td>控制阻止普攻机会</td><td>6.7%</td><td>10–25%</td><td>偏低但可接受；不以提高控制掩盖输出不足。</td></tr>
+          </tbody></table></div>
+          <h3>调参顺序：先对齐条件，再动数值</h3>
+          <ol class="checklist">
+            <li><strong>固定比较条件：</strong>双方主将处于同一风险档位（都前锋或都中军）、初始兵力一致、战法槽数量与品质预算一致；否则胜率差异无法归因。</li>
+            <li><strong>先调有效输出：</strong>用兵力、基础伤害或主动 / 追击占比，把每方八回合有效输出抬到约 2650–2900，在约 2410 的击杀阈值上留出 10–20% 余量。</li>
+            <li><strong>再调治疗与控制：</strong>治疗不超过本队承伤的 25%，单一控制覆盖率不超过 25%；提高控制时同步检查输出，避免用控制拖长对局。</li>
+            <li><strong>最后调单技能概率与倍率：</strong>每次只改一个战法，固定 1000 个种子重跑，六项指标全部回归才保留。</li>
+            <li><strong>规则不动：</strong>判胜边界、随机顺序与目标的选取时机不因数值调整而改变；数值改动升级版本并保留旧基线。</li>
+          </ol>
+          <div class="callout warm"><strong>本轮结论：</strong>2 : 98 是站位样例的结果，不是引擎错误；对称保护下 72.8–77.7% 的平局，才是当前参数真正需要解决的问题。六个样例战法的期望值都在建议区间内，不建议先改单技能倍率。下一轮若要展示势均力敌，应新建“双方主将同风险档位、满兵、同战法预算”的对照样例，再按每方约 2650–2900 有效输出的目标调整。</div>
+          <p class="small muted">以上数值来自 0.5 引擎实测，仅用于 0.6 草案评审；不修改 0.5 已确认规则与原型参数。复现时固定版本、样例、参数与种子 1–1000 重跑即可。</p>
+        </section>
+        <footer><div class="footer-line">战斗系统设计稿 · 0.5 已确认基线 / 0.6 待评审草案。第 01–11 章保留 26 项确认结论，第 12–16 章为本轮细化；可运行原型仍为 0.5 六战法样例。示例倍率与概率待平衡，第 16 章给出实测基线；战后恢复百分比另定。本文为原创设计，不代表竞品内部机制。</div></footer>
       </main>
     </div>
   </div>
